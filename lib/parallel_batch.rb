@@ -2,12 +2,6 @@
 
 class ParallelBatch < ActiveRecord::Base
 
-  #################
-  ### Constants ###
-  #################
-
-  VERSION = "0.0.1"
-
   #####################
   ### Class methods ###
   #####################

@@ -14,5 +14,5 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "parallel_batch"
   gem.require_paths = ["lib"]
-  gem.version       = ParallelBatch::VERSION
+  gem.version       = ParallelBatch::VERSION.dup
 end
