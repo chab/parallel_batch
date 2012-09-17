@@ -7,11 +7,11 @@ class ParallelBatch < ActiveRecord::Base
   #####################
 
   def self.find_or_create!
-    first || create!(offset: 0)
+    first || create!
   # When starting many batches at the same time we are pretty sure to get a MySQL
   # error reporting a duplicated entry. That's why we are retrying one time only.
   rescue ActiveRecord::StatementInvalid
-    first || create!(offset: 0)
+    first || create!
   end
 
   def self.start(concurrency = 1)
@@ -25,7 +25,7 @@ class ParallelBatch < ActiveRecord::Base
   end
 
   def self.reset
-    find_or_create!.update_attributes!(offset: null)
+    find_or_create!.update_attributes!(offset: nil)
   end
 
   ########################
