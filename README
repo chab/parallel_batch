@@ -1,4 +1,45 @@
-ParallelBatch runs concurrent batches on tables with huge amount of rows.
+Parallel batch distributes your batches across servers.
+
+It is based on ActiveRecord and relies on the database to ensure records are processed only once.
+
+To get started include Parallel batch into your Gemfile and run bundle install.
+
+  gem 'parallel_batch'
+
+Then run the following migration to create the parallel_batches table.
+
+  class CreateParallelBatches < ActiveRecord::Migration
+    def self.up
+      create_table :parallel_batches do |t|
+        t.string :type
+        t.string :offset # It works either with integer or string IDs.
+        t.timestamps
+      end
+
+      add_index :parallel_batches, :type, :unique: true
+    end
+
+    def self.down
+      drop_table :parallel_batches
+    end
+  end
+
+Your parallel batch must be a sub class of ParallelBatch. It must implement scope and perform methods. Perform is called for each record selected by your defined scope.
+
+    # File: app/models/track_batch.rb
+    class TrackBatch < ParallelBatch
+      def scope
+        Track.not_encoded
+      end
+
+      def perform(track)
+        track.encode_mp3
+      end
+    end
+
+For starting your batches SSH into your servers and run the following command.
+
+    TrackBatch.start(5) # Create 5 workers in their own process.
 
 To Contribute:
 
