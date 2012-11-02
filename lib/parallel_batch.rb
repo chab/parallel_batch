@@ -47,7 +47,7 @@ class ParallelBatch < ActiveRecord::Base
 
   def run
     while records = next_batch
-      records.each { |record| perform(record) }
+      records.each { |record| perform(record) rescue nil }
     end
   end
 
