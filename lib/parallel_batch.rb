@@ -15,12 +15,13 @@ class ParallelBatch < ActiveRecord::Base
   end
 
   def self.start(concurrency = 1)
-    concurrency.times { fork { start_fork } }
+    concurrency.times { Process.detach(fork { start_fork }) }
   end
 
   def self.start_fork
     puts "#{self} has started with pid #{Process.pid}"
     ActiveRecord::Base.connection.reconnect!
+    Process.daemon(false)
     find_or_create!.run
   end
 
