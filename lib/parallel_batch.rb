@@ -61,7 +61,7 @@ class ParallelBatch < ActiveRecord::Base
   end
 
   def batch_size
-    1000
+    100
   end
   
 end
