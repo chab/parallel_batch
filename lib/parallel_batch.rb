@@ -2,6 +2,8 @@
 
 class ParallelBatch < ActiveRecord::Base
 
+  VERSION = '0.0.2'.freeze
+
   #####################
   ### Class methods ###
   #####################
