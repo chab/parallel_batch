@@ -33,6 +33,14 @@ class ParallelBatch < ActiveRecord::Base
   ### Instance methods ###
   ########################
 
+  def logger
+    @logger ||= Logger.new(Rails.root.join("log", "#{self.class}-#{Rails.env}.log"))
+  end
+
+  def log(s)
+    logger.info "#{Time.now}: #{s}"
+  end
+
   def find_records
     offset ? scope.where('id > ?', offset).order(:id).limit(batch_size) : scope.order(:id).limit(batch_size)
   end
@@ -47,9 +55,13 @@ class ParallelBatch < ActiveRecord::Base
   end
 
   def run
+    log "== pid #{Process.pid} begin"
     while records = next_batch
+      log "== pid #{Process.pid} begin batch: #{records.first.id} -> #{records.last.id}"
       records.each { |record| perform(record) rescue nil }
+      log "== pid #{Process.pid} end batch: #{records.first.id} -> #{records.last.id}"
     end
+    log "== pid #{Process.pid} end"
   end
 
   def perfom(record)
@@ -63,5 +75,5 @@ class ParallelBatch < ActiveRecord::Base
   def batch_size
     100
   end
-  
+
 end
