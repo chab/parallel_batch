@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-require File.expand_path('../lib/parallel_batch/version', __FILE__)
-
 Gem::Specification.new do |gem|
   gem.authors       = ["Alexis Bernard"]
   gem.email         = ["alexis@official.com"]
@@ -14,5 +12,5 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "parallel_batch"
   gem.require_paths = ["lib"]
-  gem.version       = ParallelBatch::VERSION.dup
+  gem.version       = "0.0.2"
 end
